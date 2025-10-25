@@ -1,0 +1,66 @@
+/* src/components/SettingsFab.module.css */
+
+/* FAB всегда справа внизу — не зависит от RTL */
+.fab {
+    position: fixed;
+    right: 16px;
+    bottom: 16px;
+    z-index: 50;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--bg-elev);
+    color: var(--text);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+/* Попап якорится к правому краю и не зеркалится */
+.dialog {
+    position: fixed;
+    right: 16px;
+    bottom: 76px;
+    z-index: 51;
+    width: 320px;
+    padding: 16px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--bg-elev);
+    box-shadow: var(--shadow-2);
+
+    /* критично: внутри попапа direction = ltr, чтобы контролы не «переезжали» */
+    direction: ltr;
+}
+
+.grid {
+    display: grid;
+    gap: 12px;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.select {
+    min-width: 180px;
+    /* запас под длинные варианты языков */
+}
+
+.closeBtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 36px;
+    padding: 0 12px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+    border-radius: 8px;
+    cursor: pointer;
+}

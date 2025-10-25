@@ -1,0 +1,61 @@
+/* tokens.css — дизайн-токены проекта */
+:root {
+    /* Цвета (dark) */
+    --bg: #0b0e14;
+    --bg-elev: #121721;
+    --panel: #0f141c;
+    --border: #1f2430;
+    --text: #e6e6e6;
+    --muted: #9aa4b2;
+    --accent: #6ee7ff;
+    --danger: #ff6b6b;
+    --success: #3dd68c;
+    --warning: #f5d90a;
+
+    /* Радиусы, тени, анимации */
+    --radius: 12px;
+    --shadow-1: 0 2px 12px rgba(0, 0, 0, .25);
+    --shadow-2: 0 10px 30px rgba(0, 0, 0, .35);
+    --tr-fast: 120ms ease;
+    --tr-slow: 240ms ease;
+
+    /* Типографика и размеры */
+    --font: ui-sans-serif, Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    --fs-0: 12px;
+    --fs-1: 14px;
+    --fs-2: 16px;
+    --fs-3: 18px;
+    --fs-4: 22px;
+    --lh: 1.6;
+
+    /* Отступы (шкала) */
+    --sp-1: 4px;
+    --sp-2: 8px;
+    --sp-3: 12px;
+    --sp-4: 16px;
+    --sp-5: 24px;
+    --sp-6: 32px;
+}
+
+/* Авто-светлая тема, если включена в системе */
+@media (prefers-color-scheme: light) {
+    :root {
+        --bg: #f7f8fa;
+        --bg-elev: #ffffff;
+        --panel: #fafafa;
+        --border: #e6e8eb;
+        --text: #11181c;
+        --muted: #687076;
+        --accent: #0070f3;
+        --shadow-1: 0 2px 12px rgba(0, 0, 0, .08);
+        --shadow-2: 0 10px 30px rgba(0, 0, 0, .12);
+    }
+}
+
+/* Тема для Web3Modal, чтобы не выглядел чужеродно */
+:root {
+    --w3m-accent: var(--accent);
+    --w3m-font-family: var(--font);
+    --w3m-background-color: var(--bg-elev);
+    --w3m-color: var(--text);
+}

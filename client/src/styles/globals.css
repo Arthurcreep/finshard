@@ -1,0 +1,198 @@
+/* globals.css — глобальные стили и утилиты */
+@import './tokens.css';
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    line-height: var(--lh);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+button {
+    border: 1px solid var(--border);
+    background: var(--bg-elev);
+    color: var(--text);
+    padding: 8px 12px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: transform var(--tr-fast), background var(--tr-slow), border-color var(--tr-slow), opacity var(--tr-fast);
+}
+
+button:hover {
+    background: #151b25;
+}
+
+button:active {
+    transform: translateY(1px);
+}
+
+button:disabled {
+    opacity: .6;
+    cursor: not-allowed;
+}
+
+/* Инпуты */
+input[type="text"],
+input[type="number"],
+select {
+    background: var(--bg-elev);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 8px 10px;
+    outline: none;
+    transition: border-color var(--tr-fast), box-shadow var(--tr-fast);
+}
+
+input:focus,
+select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+/* Утилиты */
+.u-card {
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-1);
+}
+
+.u-row {
+    display: flex;
+    gap: var(--sp-3);
+    align-items: center;
+}
+
+.u-col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-2);
+}
+
+.u-sep {
+    height: 1px;
+    background: var(--border);
+    margin: var(--sp-4) 0;
+}
+
+.u-muted {
+    color: var(--muted);
+}
+
+/* Скелетон */
+.skeleton {
+    background: linear-gradient(90deg, #0f141c 25%, #131926 37%, #0f141c 63%);
+    background-size: 400% 100%;
+    animation: shimmer 1.4s ease infinite;
+    border-radius: var(--radius);
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: 100% 0;
+    }
+
+    100% {
+        background-position: -100% 0;
+    }
+}
+
+/* уже есть @media light, но добавим явный переключатель */
+:root[data-theme="light"] {
+    --bg: #f7f8fa;
+    --bg-elev: #ffffff;
+    --panel: #fafafa;
+    --border: #e6e8eb;
+    --text: #11181c;
+    --muted: #687076;
+    --accent: #0070f3;
+    --shadow-1: 0 2px 12px rgba(0, 0, 0, .08);
+    --shadow-2: 0 10px 30px rgba(0, 0, 0, .12);
+}
+
+/* корень приложения должен иметь высоту */
+html,
+body,
+#root {
+    height: 100%;
+}
+
+:root {
+    --font-sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+html,
+body {
+    font-family: var(--font-sans);
+    color: #e5e7eb;
+    /* явный цвет текста, чтобы точно было видно */
+    background: #0b0e14;
+}
+
+@font-face {
+    font-family: 'KHTeka';
+    src: url('public/fonts/KHTeka-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+:root {
+    --font-ui: 'KHTeka', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+}
+
+body {
+    font-family: var(--font-ui);
+}
+
+/* Скроллбар не должен переноситься с правой на левую сторону */
+html {
+    scrollbar-gutter: stable;
+}
+
+/* Если браузер не умеет scrollbar-gutter — всегда рисуй вертикальный скроллбар */
+@supports not (scrollbar-gutter: stable) {
+    html {
+        height: 100%;
+    }
+
+    body {
+        min-height: 100%;
+        overflow-y: scroll;
+    }
+}
+
+/* ВАЖНО: сохраняем лейаут LTR, даже если documentElement dir="rtl".
+   Это убирает «зеркаливание» flex/grid и якорей при смене языка. */
+body {
+    direction: ltr;
+}
+
+/* Если нужно отрисовать сам текст в RTL — дадим утилиту */
+.rtl-text {
+    direction: rtl;
+    text-align: right;
+}

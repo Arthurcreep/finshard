@@ -1,0 +1,195 @@
+/* src/styles/Dashboard.css */
+
+/* THEME VARIABLES (light by default) */
+:root {
+    --fs-1: 12px;
+
+    --bg: #ffffff;
+    --bg-elev: #ffffff;
+    --text: #0f172a;
+    --muted: #6b7280;
+    --border: #e5e7eb;
+    --card-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
+
+    --sp-4: 16px;
+    --sp-5: 20px;
+
+    --bg-alt: #f7f8fa;
+    /* легкая подложка справа */
+}
+
+:root[data-theme="dark"] {
+    --bg: #0b1220;
+    --bg-elev: #0f172a;
+    --text: #e5e7eb;
+    --muted: #9ca3af;
+    --border: #1f2937;
+    --card-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
+
+    --bg-alt: #0b1218;
+}
+
+/* LAYOUT */
+.dash-shell {
+    min-height: 100vh;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    background: var(--bg);
+    color: var(--text);
+}
+
+.dash-content {
+    display: grid;
+    grid-template-columns: minmax(420px, calc(50% + 80px)) minmax(340px, calc(50% - 80px));
+    grid-template-areas: "left right";
+    gap: 0;
+    min-height: 0;
+}
+
+.dash-left {
+    grid-area: left;
+    min-width: 0;
+    border-right: 1px solid var(--border);
+    overflow: auto;
+    background: var(--bg);
+}
+
+.dash-right {
+    grid-area: right;
+    background: linear-gradient(180deg, var(--bg-elev), var(--bg-alt));
+    padding: 16px 20px;
+    overflow: auto;
+}
+
+.box-cards {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(180deg, var(--bg-elev), transparent);
+}
+
+.right-grid {
+    width: 100%;
+    max-width: 980px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-rows: auto;
+    gap: 16px;
+}
+
+.box-portfolio {
+    background: transparent;
+}
+
+/* footer border on page end */
+.dash-shell>footer {
+    border-top: 1px solid var(--border);
+}
+
+/* responsive */
+@media (max-width:1100px) {
+    .dash-content {
+        grid-template-columns: 1fr;
+        grid-template-areas: "left" "right";
+    }
+
+    .dash-left {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .box-cards {
+        padding: 12px 14px;
+    }
+}
+
+/* GEAR BUTTON */
+.gear-btn {
+    position: fixed;
+    top: 14px;
+    right: 14px;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--bg-elev);
+    color: var(--text);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: var(--card-shadow);
+    z-index: 60;
+}
+
+/* SETTINGS POPUP */
+.settings-popup {
+    position: fixed;
+    top: 60px;
+    right: 14px;
+    z-index: 70;
+    width: 260px;
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--bg-elev);
+    color: var(--text);
+    box-shadow: var(--card-shadow);
+}
+
+.settings-section {
+    margin-bottom: 10px;
+}
+
+.settings-title {
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.settings-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.pill {
+    padding: 6px 10px;
+    border-radius: 999px;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+}
+
+.pill.active {
+    border-color: #2563eb;
+    color: #1d4ed8;
+}
+
+:root[data-theme="dark"] .pill.active {
+    border-color: #93c5fd;
+    color: #bfdbfe;
+}
+
+:root {
+    --bg: #ffffff;
+    --bg-elev: #ffffff;
+    --text: #0f172a;
+    --muted: #6b7280;
+    --border: #e5e7eb;
+    --card-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
+
+    /* новый фон графика для светлой темы */
+    --chart-bg: #ffffff;
+}
+
+:root[data-theme="dark"] {
+    --bg: #0b1220;
+    --bg-elev: #0f172a;
+    --text: #e5e7eb;
+    --muted: #9ca3af;
+    --border: #1f2937;
+    --card-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
+
+    /* новый фон графика для тёмной темы */
+    --chart-bg: #0b0e14;
+}

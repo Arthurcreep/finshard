@@ -1,0 +1,51 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "unimported": {
+    "entry": [
+      "src/server.js"
+    ]
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon --watch src src/server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.9.6",
+    "axios": "^1.11.0",
+    "bcryptjs": "^3.0.2",
+    "body-parser": "^2.2.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "cross-fetch": "^4.1.0",
+    "dayjs": "^1.11.13",
+    "ethers": "^6.15.0",
+    "express": "^5.1.0",
+    "express-async-handler": "^1.2.0",
+    "express-session": "^1.18.2",
+    "helmet": "^8.1.0",
+    "jose": "^6.0.13",
+    "jsonwebtoken": "^9.0.2",
+    "markdown-it": "^14.1.0",
+    "ml-matrix": "^6.12.1",
+    "morgan": "^1.10.1",
+    "nanoid": "^5.1.5",
+    "node-cron": "^4.2.1",
+    "nodemon": "^3.1.10",
+    "pg": "^8.16.3",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.37.7",
+    "technicalindicators": "^3.1.0",
+    "viem": "^2.36.0",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@nomiclabs/hardhat-etherscan": "^3.1.8",
+    "dotenv": "^16.6.1",
+    "sequelize-cli": "^6.6.3"
+  }
+}

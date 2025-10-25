@@ -1,0 +1,390 @@
+:root {
+    --bg: #0b0c0f;
+    --bg-elev: #13151a;
+    --bg-alt: #1a1d24;
+    --text: #e8eaf0;
+    --muted: #98a2b3;
+    --primary: #8b5cf6;
+    /* фиолетовый акцент */
+    --primary-weak: #ede9fe;
+    --border: #252936;
+    --success: #22c55e;
+    --danger: #ef4444;
+    --card-shadow: 0 8px 40px rgba(0, 0, 0, .35);
+}
+
+.wrap {
+    display: grid;
+    gap: 16px;
+}
+
+.row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.col {
+    grid-template-columns: 1fr;
+}
+
+@media (max-width: 860px) {
+    .row {
+        grid-template-columns: 1fr;
+    }
+}
+
+.card {
+    position: relative;
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: var(--card-shadow);
+    display: grid;
+    gap: 12px;
+}
+
+.synthetic .chip {
+    background: linear-gradient(90deg, #a78bfa, #60a5fa);
+}
+
+.moderate .chip {
+    background: linear-gradient(90deg, #34d399, #fbbf24);
+}
+
+.head {
+    display: grid;
+    grid-template-columns: 12px 1fr;
+    gap: 10px;
+    align-items: center;
+}
+
+.chip {
+    width: 12px;
+    height: 12px;
+    border-radius: 4px;
+}
+
+.sub {
+    color: var(--muted);
+    margin-top: -6px;
+}
+
+.points {
+    margin: 0;
+    padding: 0 0 0 18px;
+    display: grid;
+    gap: 6px;
+}
+
+.actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+.btn {
+    height: 36px;
+    padding: 0 14px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+    cursor: pointer;
+    transition: transform .06s ease, background .2s ease, border-color .2s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.solid {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #0b0c0f;
+    font-weight: 600;
+}
+
+.ghost {
+    background: var(--bg);
+}
+
+.solid:hover {
+    filter: brightness(1.05);
+}
+
+.ghost:hover {
+    background: var(--bg-alt);
+}
+
+/* ------------ Modal ------------ */
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: color-mix(in oklab, var(--bg) 40%, black 60%);
+    display: grid;
+    place-items: center;
+    z-index: 1000;
+    padding: 16px;
+}
+
+.dialog {
+    position: relative;
+    width: min(840px, 96vw);
+    /* больше и красивее */
+    background: var(--bg-elev);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: var(--card-shadow);
+    padding: 16px;
+}
+
+.modalHead {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.title {
+    margin: 0;
+    font-size: 1.2rem;
+    letter-spacing: .2px;
+}
+
+.modalGrid {
+    display: grid;
+    gap: 16px;
+}
+
+.content {
+    display: grid;
+    gap: 12px;
+}
+
+.close {
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    cursor: pointer;
+}
+
+.close:hover {
+    background: var(--bg-alt);
+}
+
+/* элементы формы */
+.form {
+    display: grid;
+    gap: 16px;
+}
+
+.block {
+    display: grid;
+    gap: 10px;
+}
+
+.field {
+    display: grid;
+    gap: 6px;
+}
+
+.field>span {
+    font-size: .9rem;
+    color: var(--muted);
+}
+
+.field input {
+    height: 42px;
+    padding: 0 12px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+    outline: none;
+}
+
+.field input:focus {
+    border-color: color-mix(in oklab, var(--primary) 60%, white 40%);
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--primary) 20%, transparent 80%);
+}
+
+.tokenPills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.pill {
+    height: 34px;
+    padding: 0 12px;
+    border-radius: 999px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    cursor: pointer;
+}
+
+.pillActive {
+    background: var(--primary-weak);
+    color: #3b2a80;
+    border-color: color-mix(in oklab, var(--primary) 60%, white 40%);
+    font-weight: 600;
+}
+
+.amountRow {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 8px;
+}
+
+.maxBtn {
+    height: 42px;
+    padding: 0 12px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+    cursor: pointer;
+}
+
+.maxBtn:hover {
+    background: var(--bg-alt);
+}
+
+.muted {
+    color: var(--muted);
+}
+
+.modalActions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    padding-top: 6px;
+    border-top: 1px dashed var(--border);
+}
+
+.hr {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+}
+
+.infoRow {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+@media (max-width: 720px) {
+    .infoRow {
+        grid-template-columns: 1fr;
+    }
+}
+
+.infoCard {
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 12px;
+    background: var(--bg);
+    display: grid;
+    gap: 6px;
+}
+
+.infoHead {
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+    color: var(--muted);
+    font-size: .9rem;
+}
+
+.infoMain {
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.infoSub {
+    color: var(--muted);
+    font-size: .9rem;
+}
+
+.descBlock {
+    display: grid;
+    gap: 8px;
+    color: var(--text);
+}
+
+/* анимации появления */
+@keyframes overlayFadeIn {
+    from {
+        opacity: 0
+    }
+
+    to {
+        opacity: 1
+    }
+}
+
+@keyframes dialogPopIn {
+    from {
+        transform: translateY(8px) scale(.98);
+        opacity: 0
+    }
+
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1
+    }
+}
+
+/* отключаем анимации, если пользователь не хочет */
+@media (prefers-reduced-motion: reduce) {
+
+    .overlay[data-open],
+    .dialog[data-open] {
+        animation: none !important
+    }
+}
+
+.overlay[data-open] {
+    animation: overlayFadeIn .18s ease-out both;
+}
+
+.dialog[data-open] {
+    animation: dialogPopIn .22s cubic-bezier(.2, .7, .2, 1) both;
+}
+
+/* аккуратная голова модалки + сетка */
+.modalHead {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.modalGrid {
+    display: grid;
+    gap: 16px;
+}
+
+/* tips */
+.tips {
+    display: grid;
+    gap: 8px;
+    padding: 10px 12px;
+    border: 1px dashed var(--border);
+    border-radius: 12px;
+    background: color-mix(in oklab, var(--bg) 80%, var(--primary) 20%);
+}
+
+.tipItem {
+    font-size: .92rem;
+    color: var(--text);
+    opacity: .9;
+}

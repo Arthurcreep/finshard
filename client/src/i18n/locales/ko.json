@@ -1,0 +1,150 @@
+{
+  "common": {
+    "settings": "설정",
+    "theme": "테마",
+    "language": "언어",
+    "dark": "다크",
+    "light": "라이트",
+    "close": "닫기",
+    "langName": {
+      "ru": "Русский",
+      "en": "English",
+      "ar": "العربية",
+      "zh": "中文",
+      "ko": "한국어",
+      "ja": "日本語"
+    }
+  },
+  "start": {
+    "title": "환영합니다",
+    "subtitle": "지갑을 연결하고 메시지에 서명하면 포트폴리오로 이동합니다.",
+    "checkingSignature": "서명 확인 중…",
+    "authError": "지갑 인증에 실패했습니다"
+  },
+  "dashboard": {
+    "workspace": "작업 공간",
+    "chartControls": "차트 및 컨트롤",
+    "portfolioProducts": "포트폴리오 및 상품"
+  },
+  "wallet": {
+    "disconnect": "연결 해제"
+  },
+  "app": {
+    "symbolPlaceholder": "BTCUSDT",
+    "fullHistory": "전체 히스토리",
+    "showForecast": "예측 표시",
+    "loading": "로딩 중…",
+    "chartTitle": "차트",
+    "symbol": "심볼",
+    "timeframe": "시간 프레임",
+    "history": "히스토리",
+    "historyShort": "짧게",
+    "historyFull": "전체",
+    "historyHint": "full=1 은 ~1000 캔들, 아니면 ~500",
+    "generateForecast": "예측 생성",
+    "generating": "생성 중…",
+    "seriesLoadError": "차트 데이터를 불러오지 못했습니다",
+    "forecastError": "예측 생성 실패 (ML 서비스 불가?)",
+    "urlHint": "힌트: URL은 동기화됩니다. 예:"
+  },
+  "ind": {
+    "title": "지표",
+    "dialogTitle": "지표 설정",
+    "type": "지표 종류",
+    "period": "기간",
+    "color": "색상",
+    "remove": "삭제",
+    "add": "추가",
+    "types": {
+      "sma": "SMA (단순)",
+      "ema": "EMA (지수)",
+      "rsi": "RSI",
+      "macd": "MACD",
+      "bb": "볼린저 밴드",
+      "vwap": "VWAP"
+    }
+  },
+  "inv": {
+    "synthetic": {
+      "title": "합성 투자",
+      "short": "합성",
+      "sub": "높은 위험, 더 큰 잠재력",
+      "desc": "파생상품과 리밸런싱을 통한 높은 잠재력 전략.",
+      "p1": "변동성 헤지",
+      "p2": "동적 리밸런싱",
+      "p3": "목표: 연 14–24%"
+    },
+    "moderate": {
+      "title": "중간 투자",
+      "short": "중간",
+      "sub": "위험/수익 균형",
+      "desc": "유동성 자산에서 위험과 수익의 균형.",
+      "p1": "하락장 대비 현금 보유",
+      "p2": "대형 유동성 자산",
+      "p3": "목표: 연 14–16%"
+    },
+    "more": "자세히",
+    "apply": "신청",
+    "application": "신청",
+    "form": {
+      "name": "이름",
+      "email": "이메일",
+      "amount": "금액 (USD)",
+      "agree": "약관에 동의합니다",
+      "send": "보내기",
+      "cancel": "취소",
+      "signing": "서명 중…",
+      "connectWallet": "지갑을 연결하세요.",
+      "mustAgree": "약관에 동의해야 합니다.",
+      "hintTx": "실행됨: 신청 서명 + 기술 트랜잭션 (송금 없음).",
+      "hintSign": "실행됨: 신청 서명 (온체인 트랜잭션 없음).",
+      "invalidAmount": "잘못된 금액",
+      "invalidCustomToken": "사용자 토큰에는 올바른 ERC-20 주소가 필요합니다",
+      "network": "네트워크",
+      "term": "기간",
+      "days": "일",
+      "workBscUsdt": "BSC에서 운영, 정산은 USDT",
+      "targetAsset": "대상 자산",
+      "erc20Address": "ERC-20 주소",
+      "fillBalance": "잔액 입력",
+      "swapNote": "입금은 USDT; BNB/CAKE 스왑은 1inch. 출금은 항상 USDT.",
+      "dcaThresholds": "DCA 임계값",
+      "dcaText": "BTC 로컬 ATH의 10%/20%에서 트랜치 (25%+25%) 발동.",
+      "exit": "종료",
+      "exitText": "항상 USDT. 수익 확정 ≥14% + 가스 + 서비스 수수료.",
+      "routing": "라우팅",
+      "routingText": "1inch 전용; 슬리피지와 MEV 관리됨."
+    }
+  },
+  "portfolio": {
+    "portfolio": "포트폴리오",
+    "transactions": "거래내역",
+    "allNetworks": "모든 네트워크",
+    "noData": "데이터 없음",
+    "loading": "로딩 중…",
+    "token": "토큰",
+    "qty": "수량",
+    "usd": "USD",
+    "net": "네트워크",
+    "dist": "포트폴리오 배분",
+    "txHash": "해시",
+    "date": "날짜",
+    "amount": "금액",
+    "placeholderSub": "지원: ETH, USDT, USDC, WETH, BNB, WBNB",
+    "loadError": "로드 오류",
+    "fetchBalancesError": "잔액을 가져오지 못했습니다"
+  },
+  "footer": {
+    "keep": "계속 소식 받기",
+    "lead": "뉴스와 업데이트를 가장 먼저 받아보세요.",
+    "email": "이메일 주소",
+    "sub": "구독",
+    "company": "회사",
+    "about": "소개",
+    "blog": "블로그",
+    "jobs": "채용",
+    "connect": "연결하기",
+    "companyName": "Finshard.com",
+    "companyUrl": "/ko"
+  }
+}

@@ -1,0 +1,150 @@
+{
+  "common": {
+    "settings": "设置",
+    "theme": "主题",
+    "language": "语言",
+    "dark": "深色",
+    "light": "浅色",
+    "close": "关闭",
+    "langName": {
+      "ru": "Русский",
+      "en": "English",
+      "ar": "العربية",
+      "zh": "中文",
+      "ko": "한국어",
+      "ja": "日本語"
+    }
+  },
+  "start": {
+    "title": "欢迎",
+    "subtitle": "连接钱包，签署消息，然后进入投资组合。",
+    "checkingSignature": "正在验证签名…",
+    "authError": "钱包认证失败"
+  },
+  "dashboard": {
+    "workspace": "工作区",
+    "chartControls": "图表与控制",
+    "portfolioProducts": "投资组合与产品"
+  },
+  "wallet": {
+    "disconnect": "断开连接"
+  },
+  "app": {
+    "symbolPlaceholder": "BTCUSDT",
+    "fullHistory": "全部历史",
+    "showForecast": "显示预测",
+    "loading": "加载中…",
+    "chartTitle": "图表",
+    "symbol": "符号",
+    "timeframe": "时间周期",
+    "history": "历史",
+    "historyShort": "短",
+    "historyFull": "完整",
+    "historyHint": "full=1 返回 ~1000 根K线，否则 ~500",
+    "generateForecast": "生成预测",
+    "generating": "生成中…",
+    "seriesLoadError": "图表数据加载失败",
+    "forecastError": "预测生成失败（ML服务不可用？）",
+    "urlHint": "提示: URL 已同步，例如:"
+  },
+  "ind": {
+    "title": "指标",
+    "dialogTitle": "指标设置",
+    "type": "指标类型",
+    "period": "周期",
+    "color": "颜色",
+    "remove": "删除",
+    "add": "添加",
+    "types": {
+      "sma": "SMA（简单均线）",
+      "ema": "EMA（指数均线）",
+      "rsi": "RSI",
+      "macd": "MACD",
+      "bb": "布林带",
+      "vwap": "VWAP"
+    }
+  },
+  "inv": {
+    "synthetic": {
+      "title": "合成投资",
+      "short": "合成",
+      "sub": "更高风险，更大潜力",
+      "desc": "通过衍生品和再平衡实现高潜力的策略。",
+      "p1": "波动对冲",
+      "p2": "动态再平衡",
+      "p3": "目标：每年14–24%"
+    },
+    "moderate": {
+      "title": "中等投资",
+      "short": "中等",
+      "sub": "风险与回报平衡",
+      "desc": "在流动性资产中平衡风险和收益。",
+      "p1": "下跌时的现金缓冲",
+      "p2": "大型流动性资产",
+      "p3": "目标：每年14–16%"
+    },
+    "more": "更多",
+    "apply": "申请",
+    "application": "申请",
+    "form": {
+      "name": "姓名",
+      "email": "邮箱",
+      "amount": "金额 (USD)",
+      "agree": "我同意条款",
+      "send": "发送",
+      "cancel": "取消",
+      "signing": "签名中…",
+      "connectWallet": "请连接钱包。",
+      "mustAgree": "必须同意条款。",
+      "hintTx": "将执行：申请签名 + 技术交易（无资金转移）。",
+      "hintSign": "将执行：申请签名（无链上交易）。",
+      "invalidAmount": "无效金额",
+      "invalidCustomToken": "自定义代币需要有效的ERC-20地址",
+      "network": "网络",
+      "term": "期限",
+      "days": "天",
+      "workBscUsdt": "运行于 BSC，结算为 USDT",
+      "targetAsset": "目标资产",
+      "erc20Address": "ERC-20 地址",
+      "fillBalance": "填入余额",
+      "swapNote": "入金为 USDT；BNB/CAKE 通过 1inch 交换。赎回始终为 USDT。",
+      "dcaThresholds": "DCA 阈值",
+      "dcaText": "相对本地 ATH 下跌 10%/20% 触发分批（25% + 25%）。",
+      "exit": "退出",
+      "exitText": "始终为 USDT。止盈 ≥14% + Gas + 服务费。",
+      "routing": "路由",
+      "routingText": "仅限 1inch；滑点与 MEV 可控。"
+    }
+  },
+  "portfolio": {
+    "portfolio": "投资组合",
+    "transactions": "交易",
+    "allNetworks": "所有网络",
+    "noData": "无数据",
+    "loading": "加载中…",
+    "token": "代币",
+    "qty": "数量",
+    "usd": "USD",
+    "net": "网络",
+    "dist": "组合分配",
+    "txHash": "哈希",
+    "date": "日期",
+    "amount": "金额",
+    "placeholderSub": "支持：ETH、USDT、USDC、WETH、BNB、WBNB",
+    "loadError": "加载错误",
+    "fetchBalancesError": "获取余额失败"
+  },
+  "footer": {
+    "keep": "保持联系",
+    "lead": "第一时间获取新闻与更新。",
+    "email": "你的邮箱",
+    "sub": "订阅",
+    "company": "公司",
+    "about": "关于我们",
+    "blog": "博客",
+    "jobs": "招聘",
+    "connect": "社交",
+    "companyName": "Finshard.com",
+    "companyUrl": "/zh"
+  }
+}

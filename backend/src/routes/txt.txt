@@ -1,0 +1,88 @@
+// зависимости
+const cors = require('cors');
+const express = require('express');
+const cookieParser = require('cookie-parser')
+const session = require('express-session')
+// роуты
+const authRoutes = require('./routes/auth.routes')
+const seriesRoutes = require('./routes/series.routes');
+const forecastRoutes = require('./routes/forecast.routes');
+const txRoutes = require('./routes/tx.routes')
+// контроллеры
+const SeriesControllerMod = require('./controllers/SeriesController');
+const ForecastControllerMod = require('./controllers/ForecastController');
+const SeriesController = SeriesControllerMod.default || SeriesControllerMod;
+const ForecastController = ForecastControllerMod.default || ForecastControllerMod;
+// сервисы/репозитории
+const candleService = require('./services/candleService');
+// ВНИМАНИЕ: имя файла проверь.
+// Если у тебя файл называется indicatorService.js (без s) — измени строку ниже:
+const indicatorsService = require('./services/indicatorService');
+// const indicatorsService = require('./services/indicatorService'); // <- если файл без "s"
+const forecastService = require('./services/forecastService');
+const Forecast = require('./models/Forecast');
+app.use(morgan('dev'))
+const app = express()
+app.use(express.json())
+app.use(cookieParser())
+app.use(session({
+    secret: process.env.SESSION_SECRET || 'replace_me',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { sameSite: 'lax' } // secure:true в проде
+}))
+// helper: колонка method может отсутствовать во время миграций
+function isNoSuchColumn(err) {
+    const code = err?.original?.code || err?.parent?.code || err?.name || '';
+    const msg = (err?.original?.message || err?.message || '').toLowerCase();
+    return code === 'SQLITE_ERROR' && msg.includes('no such column')
+        || code === '42703'        // Postgres undefined column
+        || msg.includes('no such column')
+        || msg.includes('does not exist');
+}
+// forecastRepo ОБЪЯВЛЯЕМ ДО deps
+const forecastRepo = {
+    async getLatest(symbol, timeframe, method = 'blend') {
+        try {
+            const row = await Forecast.findOne({
+                where: { symbol, timeframe, method },
+                order: [['createdAt', 'DESC']],
+            });
+            return row ? row.toJSON() : null;
+        } catch (e) {
+            if (isNoSuchColumn(e)) {
+                console.warn('[forecastRepo] method column missing, retrying without it');
+                const row = await Forecast.findOne({
+                    where: { symbol, timeframe },
+                    order: [['createdAt', 'DESC']],
+                });
+                return row ? row.toJSON() : null;
+            }
+            throw e;
+        }
+    },
+    async save(payload) {
+        const row = await Forecast.create(payload);
+        return row.toJSON();
+    }
+};
+// deps ТОЛЬКО ПОСЛЕ объявления forecastRepo
+const deps = {
+    candleRepo: candleService,
+    forecastRepo,
+    indicatorsService,
+    forecastService,
+};
+// монтируем роуты
+app.use('/api/auth', authRoutes)
+app.use('/api/tx', txRoutes)
+app.use('/api/forecast', forecastRoutes)
+app.use('/api/series', seriesRoutes)
+// 404 и error handler
+app.use((_req, res) => res.status(404).json({ ok: false, error: 'Not Found' }));
+app.use((err, _req, res, _next) => {
+    console.error('❌', err);
+    const code = err.status || err.statusCode || 500;
+    res.status(code).json({ ok: false, error: String(err.message || err) });
+});
+module.exports = app;

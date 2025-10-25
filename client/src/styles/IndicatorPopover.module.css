@@ -1,0 +1,209 @@
+/* src/components/IndicatorPopover.module.css */
+.wrap {
+    position: relative;
+}
+
+.trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    z-index: 50;
+}
+
+.trigger:hover {
+    background: var(--bg-alt);
+}
+
+.count {
+    min-width: 18px;
+    height: 18px;
+    padding: 0 6px;
+    border-radius: 9px;
+    font-size: 12px;
+    background: var(--bg-alt);
+    color: var(--muted);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pop {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    z-index: 60;
+    width: 420px;
+    max-width: 92vw;
+    background: var(--bg-elev);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
+    padding: 12px;
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 320px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.row {
+    display: grid;
+    grid-template-columns: 32px 1fr 80px 40px 32px;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 8px;
+    border-radius: 8px;
+    background: var(--bg);
+}
+
+.checkbox {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+}
+
+.select {
+    height: 32px;
+    border-radius: 8px;
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 0 10px;
+}
+
+.select:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent, #22c55e) 40%, transparent);
+    border-color: var(--accent, #22c55e);
+}
+
+.period {
+    width: 80px;
+    height: 28px;
+    padding: 0 8px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 6px;
+}
+
+.color {
+    width: 40px;
+    height: 28px;
+    padding: 0;
+    border: 1px solid var(--border);
+    background: transparent;
+    border-radius: 6px;
+}
+
+.del {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--bg-alt);
+    color: var(--muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    line-height: 1;
+}
+
+.del:hover {
+    background: var(--bg);
+    color: var(--text);
+}
+
+.addBlock {
+    margin-top: 12px;
+    display: grid;
+    grid-template-columns: minmax(120px, 1fr) 96px 48px auto;
+    gap: 8px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--border);
+    align-items: center;
+}
+
+.addBtn {
+    height: 36px;
+    padding: 0 14px;
+    font-size: 14px;
+    line-height: 1;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--bg-alt);
+    color: var(--text);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, .06), 0 1px 6px rgba(0, 0, 0, .06);
+    transition: transform .06s ease, box-shadow .15s ease, background .15s ease, opacity .15s ease;
+}
+
+.addBtn:hover:not(:disabled) {
+    background: var(--bg);
+    box-shadow: 0 1px 0 rgba(0, 0, 0, .08), 0 3px 14px rgba(0, 0, 0, .10);
+}
+
+.addBtn:active:not(:disabled) {
+    transform: translateY(1px);
+}
+
+.addBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.addBtnPrimary {
+    background: linear-gradient(180deg, var(--accent, #22c55e), var(--accent-strong, #16a34a));
+    color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, .08);
+}
+
+.addBtnPrimary:hover {
+    filter: brightness(1.02);
+}
+
+.addBtnDisabled {}
+
+.plus {
+    display: inline-block;
+    font-weight: 600;
+    transform: translateY(-1px);
+}
+
+/* мелкие улучшения */
+.skeleton {
+    display: grid;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.shimmerRow {
+    height: 12px;
+    border-radius: 6px;
+    background: linear-gradient(90deg, var(--bg) 0%, var(--bg-alt) 50%, var(--bg) 100%);
+    background-size: 200% 100%;
+    animation: shimmer 1.2s infinite linear;
+}
+
+@keyframes shimmer {
+    to {
+        background-position: -200% 0;
+    }
+}

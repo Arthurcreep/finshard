@@ -1,0 +1,150 @@
+{
+  "common": {
+    "settings": "設定",
+    "theme": "テーマ",
+    "language": "言語",
+    "dark": "ダーク",
+    "light": "ライト",
+    "close": "閉じる",
+    "langName": {
+      "ru": "Русский",
+      "en": "English",
+      "ar": "العربية",
+      "zh": "中文",
+      "ko": "한국어",
+      "ja": "日本語"
+    }
+  },
+  "start": {
+    "title": "ようこそ",
+    "subtitle": "ウォレットを接続し、メッセージに署名してポートフォリオへ。",
+    "checkingSignature": "署名を確認中…",
+    "authError": "ウォレット認証に失敗しました"
+  },
+  "dashboard": {
+    "workspace": "ワークスペース",
+    "chartControls": "チャートとコントロール",
+    "portfolioProducts": "ポートフォリオとプロダクト"
+  },
+  "wallet": {
+    "disconnect": "切断"
+  },
+  "app": {
+    "symbolPlaceholder": "BTCUSDT",
+    "fullHistory": "全履歴",
+    "showForecast": "予測を表示",
+    "loading": "読み込み中…",
+    "chartTitle": "チャート",
+    "symbol": "シンボル",
+    "timeframe": "時間足",
+    "history": "履歴",
+    "historyShort": "短い",
+    "historyFull": "完全",
+    "historyHint": "full=1 は ~1000 本、そうでなければ ~500 本",
+    "generateForecast": "予測を生成",
+    "generating": "生成中…",
+    "seriesLoadError": "チャートデータの読み込みに失敗しました",
+    "forecastError": "予測を生成できませんでした (ML サービスが利用不可？)",
+    "urlHint": "ヒント: URL は同期されます。例:"
+  },
+  "ind": {
+    "title": "インジケーター",
+    "dialogTitle": "インジケーター設定",
+    "type": "インジケーター種類",
+    "period": "期間",
+    "color": "色",
+    "remove": "削除",
+    "add": "追加",
+    "types": {
+      "sma": "SMA（単純移動平均）",
+      "ema": "EMA（指数移動平均）",
+      "rsi": "RSI",
+      "macd": "MACD",
+      "bb": "ボリンジャーバンド",
+      "vwap": "VWAP"
+    }
+  },
+  "inv": {
+    "synthetic": {
+      "title": "シンセティック投資",
+      "short": "シンセティック",
+      "sub": "リスク高め・潜在力大",
+      "desc": "デリバティブとリバランスによる高い可能性のある戦略。",
+      "p1": "ボラティリティへのヘッジ",
+      "p2": "ダイナミック・リバランス",
+      "p3": "目標: 年間14–24％"
+    },
+    "moderate": {
+      "title": "ミディアム投資",
+      "short": "ミディアム",
+      "sub": "リスクとリターンのバランス",
+      "desc": "流動性資産でリスクと収益のバランスを取る。",
+      "p1": "下落時のキャッシュバッファ",
+      "p2": "大規模で流動性の高い資産",
+      "p3": "目標: 年間14–16％"
+    },
+    "more": "詳細",
+    "apply": "申し込み",
+    "application": "申し込み",
+    "form": {
+      "name": "名前",
+      "email": "メール",
+      "amount": "金額（USD）",
+      "agree": "条件に同意します",
+      "send": "送信",
+      "cancel": "キャンセル",
+      "signing": "署名中…",
+      "connectWallet": "ウォレットを接続してください。",
+      "mustAgree": "条件に同意する必要があります。",
+      "hintTx": "実行されます: 申請署名 + 技術的トランザクション（送金なし）。",
+      "hintSign": "実行されます: 申請署名（オンチェーン取引なし）。",
+      "invalidAmount": "無効な金額",
+      "invalidCustomToken": "カスタムトークンには有効なERC-20アドレスが必要です",
+      "network": "ネットワーク",
+      "term": "期間",
+      "days": "日",
+      "workBscUsdt": "BSCで稼働、精算はUSDT",
+      "targetAsset": "対象資産",
+      "erc20Address": "ERC-20アドレス",
+      "fillBalance": "残高を入力",
+      "swapNote": "入金はUSDT; BNB/CAKEは1inchでスワップ。出金は常にUSDT。",
+      "dcaThresholds": "DCA閾値",
+      "dcaText": "BTCローカルATHの10％・20％でトランシェ（25％+25％）発動。",
+      "exit": "退出",
+      "exitText": "常にUSDT。利確閾値 ≥14％ + ガス + サービス料。",
+      "routing": "ルーティング",
+      "routingText": "1inchのみ; スリッページとMEVは管理済み。"
+    }
+  },
+  "portfolio": {
+    "portfolio": "ポートフォリオ",
+    "transactions": "取引履歴",
+    "allNetworks": "すべてのネットワーク",
+    "noData": "データなし",
+    "loading": "読み込み中…",
+    "token": "トークン",
+    "qty": "数量",
+    "usd": "USD",
+    "net": "ネットワーク",
+    "dist": "ポートフォリオ配分",
+    "txHash": "ハッシュ",
+    "date": "日付",
+    "amount": "金額",
+    "placeholderSub": "対応: ETH, USDT, USDC, WETH, BNB, WBNB",
+    "loadError": "読み込みエラー",
+    "fetchBalancesError": "残高の取得に失敗しました"
+  },
+  "footer": {
+    "keep": "つながりを保ちましょう",
+    "lead": "最新ニュースとアップデートをいち早くお届けします。",
+    "email": "メールアドレス",
+    "sub": "購読する",
+    "company": "会社情報",
+    "about": "概要",
+    "blog": "ブログ",
+    "jobs": "採用情報",
+    "connect": "つながる",
+    "companyName": "Finshard.com",
+    "companyUrl": "/ja"
+  }
+}

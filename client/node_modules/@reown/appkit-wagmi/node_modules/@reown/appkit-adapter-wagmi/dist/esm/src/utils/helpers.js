@@ -1,0 +1,78 @@
+import {} from '@reown/appkit-common';
+import { ConstantsUtil, PresetsUtil } from '@reown/appkit-utils';
+import { UniversalProvider } from '@walletconnect/universal-provider';
+import { fallback, http } from 'viem';
+import { CoreHelperUtil } from '@reown/appkit-core';
+import { WcHelpersUtil } from '@reown/appkit';
+export async function getWalletConnectCaipNetworks(connector) {
+    if (!connector) {
+        throw new Error('networkControllerClient:getApprovedCaipNetworks - connector is undefined');
+    }
+    const provider = (await connector?.getProvider());
+    const approvedCaipNetworkIds = WcHelpersUtil.getChainsFromNamespaces(provider?.session?.namespaces);
+    return {
+        supportsAllNetworks: false,
+        approvedCaipNetworkIds
+    };
+}
+export function getEmailCaipNetworks() {
+    return {
+        supportsAllNetworks: true,
+        approvedCaipNetworkIds: PresetsUtil.WalletConnectRpcChainIds.map(id => `${ConstantsUtil.EIP155}:${id}`)
+    };
+}
+export function getTransport({ chain, projectId }) {
+    const RPC_URL = CoreHelperUtil.getBlockchainApiUrl();
+    const chainDefaultUrl = chain.rpcUrls[0]?.http?.[0];
+    if (!PresetsUtil.WalletConnectRpcChainIds.includes(chain.id)) {
+        return http(chainDefaultUrl);
+    }
+    return fallback([
+        http(`${RPC_URL}/v1/?chainId=${ConstantsUtil.EIP155}:${chain.id}&projectId=${projectId}`, {
+            fetchOptions: {
+                headers: {
+                    'Content-Type': 'text/plain'
+                }
+            }
+        }),
+        http(chainDefaultUrl)
+    ]);
+}
+export function requireCaipAddress(caipAddress) {
+    if (!caipAddress) {
+        throw new Error('No CAIP address provided');
+    }
+    const account = caipAddress.split(':')[2];
+    if (!account) {
+        throw new Error('Invalid CAIP address');
+    }
+    return account;
+}
+export function convertToAppKitChains(caipNetworks) {
+    const chains = caipNetworks.map(caipNetwork => ({
+        blockExplorers: {
+            default: {
+                apiUrl: '',
+                name: '',
+                url: caipNetwork.explorerUrl || ''
+            }
+        },
+        fees: undefined,
+        formatters: undefined,
+        id: Number(caipNetwork.chainId),
+        name: caipNetwork.name,
+        nativeCurrency: {
+            decimals: 18,
+            name: caipNetwork.currency,
+            symbol: caipNetwork.currency
+        },
+        rpcUrls: {
+            default: {
+                http: [caipNetwork.rpcUrl]
+            }
+        },
+        serializers: undefined
+    }));
+    return chains;
+}
+//# sourceMappingURL=helpers.js.map

@@ -1,0 +1,136 @@
+{
+    "common": {
+        "settings": "Settings",
+        "theme": "Theme",
+        "language": "Language",
+        "dark": "Dark",
+        "light": "Light",
+        "close": "Close",
+        "langName": {
+            "ru": "Русский",
+            "en": "English",
+            "ar": "العربية",
+            "zh": "中文",
+            "ko": "한국어",
+            "ja": "日本語"
+        }
+    },
+    "start": {
+        "title": "Welcome",
+        "subtitle": "Connect your wallet, sign a message, and go to your portfolio.",
+        "checkingSignature": "Verifying signature…",
+        "authError": "Failed to authenticate with wallet"
+    },
+    "dashboard": {
+        "workspace": "Workspace",
+        "chartControls": "Chart & controls",
+        "portfolioProducts": "Portfolio & products"
+    },
+    "wallet": {
+        "disconnect": "Disconnect"
+    },
+    "app": {
+        "symbolPlaceholder": "BTCUSDT",
+        "fullHistory": "Full history",
+        "showForecast": "Show forecast",
+        "loading": "Loading…"
+    },
+    "ind": {
+        "title": "Indicators",
+        "dialogTitle": "Indicator settings",
+        "type": "Indicator type",
+        "period": "Period",
+        "color": "Color",
+        "remove": "Remove",
+        "add": "Add",
+        "types": {
+            "sma": "SMA (Simple MA)",
+            "ema": "EMA (Exponential)",
+            "rsi": "RSI",
+            "macd": "MACD",
+            "bb": "Bollinger Bands",
+            "vwap": "VWAP"
+        }
+    },
+    "inv": {
+        "synthetic": {
+            "title": "Synthetic investment",
+            "short": "Synthetic",
+            "sub": "Higher risk, higher potential",
+            "desc": "strategy with increased potential through derivatives and rebalancing.",
+            "p1": "Hedge against volatility",
+            "p2": "Dynamic rebalancing",
+            "p3": "Target: 14–24% per year"
+        },
+        "moderate": {
+            "title": "Moderate investment",
+            "short": "Moderate",
+            "sub": "Balanced risk/return",
+            "desc": "balance of risk and yield in liquid assets.",
+            "p1": "Cash buffer for drawdowns",
+            "p2": "Large liquid assets",
+            "p3": "Target: 14–16% per year"
+        },
+        "more": "More",
+        "apply": "Apply",
+        "application": "Application",
+        "form": {
+            "name": "Name",
+            "email": "Email",
+            "amount": "Amount, USD",
+            "agree": "I agree to the terms",
+            "send": "Send",
+            "cancel": "Cancel",
+            "signing": "Signing…",
+            "connectWallet": "Connect your wallet.",
+            "mustAgree": "You must agree to the terms.",
+            "hintTx": "Will be performed: application signature + technical tx (no funds).",
+            "hintSign": "Will be performed: application signature (no on-chain tx)."
+        }
+    },
+    "portfolio": {
+        "portfolio": "Portfolio",
+        "transactions": "Transactions",
+        "allNetworks": "All networks",
+        "noData": "No data",
+        "loading": "Loading…",
+        "token": "Token",
+        "qty": "Qty",
+        "usd": "USD",
+        "net": "Network",
+        "dist": "Portfolio allocation",
+        "txHash": "Hash",
+        "date": "Date",
+        "amount": "Amount",
+        "placeholderSub": "Supported: ETH, USDT, USDC, WETH, BNB, WBNB",
+        "loadError": "Load error",
+        "fetchBalancesError": "Failed to fetch balances"
+    },
+    "footer": {
+        "keep": "Keep in touch",
+        "lead": "Be first to get news and updates.",
+        "email": "Your email",
+        "sub": "Subscribe",
+        "company": "Company",
+        "about": "About",
+        "blog": "Blog",
+        "jobs": "Jobs",
+        "connect": "Connect",
+        "companyName": "Finshard.com",
+        "companyUrl": "/en"
+    },
+    "app": {
+    "chartTitle": "Chart",
+    "symbol": "Symbol",
+    "timeframe": "Timeframe",
+    "history": "History",
+    "historyShort": "short",
+    "historyFull": "full",
+    "historyHint": "full=1 returns up to ~1000 candles, else ~500",
+    "generateForecast": "Generate forecast",
+    "generating": "Generating…",
+    "seriesLoadError": "Failed to load chart data",
+    "forecastError": "Forecast generation failed (ML service unavailable?)",
+    "urlHint": "Tip: URL is synced, e.g."
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "name": "safebox-chain",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "compile": "hardhat compile",
+    "deploy:bsc": "hardhat run scripts/deploy.js --network bsc",
+    "verify:bsc": "hardhat verify --network bsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.2.3",
+    "@nomiclabs/hardhat-etherscan": "^3.1.8",
+    "ethers": "^5.7.2",
+    "hardhat": "^2.22.1"
+  },
+  "dependencies": {
+    "@chainlink/contracts": "^0.6.1",
+    "@openzeppelin/contracts": "^4.9.3",
+    "dotenv": "^17.2.1"
+  }
+}

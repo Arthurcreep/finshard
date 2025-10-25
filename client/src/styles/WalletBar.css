@@ -1,0 +1,28 @@
+.wb-bar {
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.wb-addr {
+    color: var(--muted);
+    font-size: var(--fs-1);
+}
+
+.wb-btn {
+    padding: 6px 10px;
+    border: 1px solid var(--border);
+    background: var(--bg-elev);
+    color: var(--text);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background var(--tr-slow), transform var(--tr-fast);
+}
+
+.wb-btn:hover {
+    background: #151b25;
+}
+
+.wb-btn:active {
+    transform: translateY(1px);
+}
