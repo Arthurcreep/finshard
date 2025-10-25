@@ -1,1 +1,6 @@
 .env
+
+# env files
+.env
+.env.*
+client/.env
