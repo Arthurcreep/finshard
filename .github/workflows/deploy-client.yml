@@ -22,6 +22,16 @@ jobs:
         working-directory: client
         run: npm run build
 
+      - name: Add host key
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+                - name: Test SSH connectivity
+        run: |
+          echo "${{ secrets.SSH_KEY }}" > id_ed25519
+          chmod 600 id_ed25519
+          ssh -o StrictHostKeyChecking=no -i id_ed25519 ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "echo connected && hostname && ls -ld /var/www/client"
+
       - name: Upload dist to server
         uses: burnett01/rsync-deployments@6.0.0
         with:
