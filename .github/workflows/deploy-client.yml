@@ -1,4 +1,3 @@
-cat > .github/workflows/deploy-client.yml <<'YAML'
 name: Deploy Client
 on:
   push:
@@ -31,11 +30,11 @@ jobs:
       - name: Check SSH key presence
         run: |
           if [ -z "${{ secrets.SSH_KEY }}" ]; then
-            echo "❌ SSH_KEY secret is empty or missing!"
+            echo "SSH_KEY secret is empty or missing!"
             exit 1
           fi
           echo "${{ secrets.SSH_KEY }}" | head -n 2
-          echo "✅ SSH_KEY is set and looks valid (first 2 lines shown only)."
+          echo "SSH_KEY looks present (printing first 2 lines only)."
 
       - name: Test SSH connectivity
         run: |
@@ -52,4 +51,3 @@ jobs:
           remote_host: ${{ secrets.SSH_HOST }}
           remote_user: ${{ secrets.SSH_USER }}
           remote_key: ${{ secrets.SSH_KEY }}
-YAML
