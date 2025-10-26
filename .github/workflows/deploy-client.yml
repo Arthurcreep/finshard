@@ -26,7 +26,8 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
-                - name: Test SSH connectivity
+
+      - name: Test SSH connectivity
         run: |
           echo "${{ secrets.SSH_KEY }}" > id_ed25519
           chmod 600 id_ed25519
