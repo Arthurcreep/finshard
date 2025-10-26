@@ -1,0 +1,35 @@
+name: Deploy Relayer
+on:
+  push:
+    branches: [main]
+    paths: ['autoswap-relayer/**']
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Upload relayer code
+        uses: burnett01/rsync-deployments@6.0.0
+        with:
+          switches: -avzr --delete
+          path: autoswap-relayer/
+          remote_path: /srv/relayer/releases/${{ github.sha }}/
+          remote_host: ${{ secrets.SSH_HOST }}
+          remote_user: ${{ secrets.SSH_USER }}
+          remote_key: ${{ secrets.SSH_KEY }}
+
+      - name: npm ci, switch, restart
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            set -e
+            cd /srv/relayer/releases/${{ github.sha }}
+            npm ci --omit=dev
+            ln -sfn /srv/relayer/shared/.env .env
+            ln -sfn /srv/relayer/releases/${{ github.sha }} /srv/relayer/current
+            systemctl restart relayer
