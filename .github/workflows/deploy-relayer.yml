@@ -1,14 +1,21 @@
 name: Deploy Relayer
+
 on:
   push:
     branches: [main]
     paths: ['autoswap-relayer/**']
+  workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Add host key
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts
 
       - name: Upload relayer code
         uses: burnett01/rsync-deployments@6.0.0

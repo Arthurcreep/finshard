@@ -1,14 +1,21 @@
 name: Deploy Backend
+
 on:
   push:
     branches: [main]
     paths: ['backend/**']
+  workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Add host key
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts
 
       - name: Upload source
         uses: burnett01/rsync-deployments@6.0.0
@@ -31,7 +38,7 @@ jobs:
             cd /srv/backend/releases/${{ github.sha }}
             npm ci --omit=dev
             ln -sfn /srv/backend/shared/.env .env
-            # если у тебя есть миграции:
+            # миграции, если есть sequelize-cli в devDependencies:
             npx sequelize db:migrate || true
             ln -sfn /srv/backend/releases/${{ github.sha }} /srv/backend/current
             systemctl restart backend

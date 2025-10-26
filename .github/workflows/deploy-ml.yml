@@ -1,14 +1,21 @@
 name: Deploy ML
+
 on:
   push:
     branches: [main]
     paths: ['mlservice/**']
+  workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Add host key
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts
 
       - name: Upload ML code
         uses: burnett01/rsync-deployments@6.0.0
@@ -32,6 +39,8 @@ jobs:
             python3 -m venv .venv
             . .venv/bin/activate
             pip install --upgrade pip
+            # если нужны системные либы (prophet/numpy), ставь их заранее на сервер:
+            # apt -y install build-essential python3-dev
             pip install -r requirements.txt
             ln -sfn /srv/ml/shared/.env .env
             ln -sfn /srv/ml/releases/${{ github.sha }} /srv/ml/current
