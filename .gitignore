@@ -1,6 +1,20 @@
-.env
-
-# env files
+# общие
+.DS_Store
+*.log
 .env
 .env.*
-client/.env
+*.local
+
+# Node
+node_modules/
+npm-debug.log*
+yarn.lock
+pnpm-lock.yaml
+
+# Vite/React build-артефакты (собираем на CI, на сервер rsync'ом)
+client/dist/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
