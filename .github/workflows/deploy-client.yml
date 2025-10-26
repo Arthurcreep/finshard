@@ -1,13 +1,14 @@
 name: Deploy Client
+
 on:
   push:
     branches: [main]
     paths: ['client/**']
-  workflow_dispatch:
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
 
@@ -15,15 +16,20 @@ jobs:
         with:
           node-version: 20
 
-      # 🔹 создаём env-файл с реальными значениями для Vite
-      - name: Create .env.production
+      # 🧩 Создаём .env на лету из GitHub Secrets
+      - name: Create .env for build
         working-directory: client
         run: |
-          cat > .env.production <<EOF
-          VITE_WC_PROJECT_ID=${{ secrets.WC_PROJECT_ID }}
-          VITE_API_URL=${{ vars.API_BASE_URL }}
-          EOF
+          rm -f .env
+          {
+            echo "VITE_WC_PROJECT_ID=${{ secrets.WC_PROJECT_ID }}"
+            echo "VITE_API_URL=https://api.finshard.com"
+            echo "VITE_PUBLIC_URL=https://finshard.com"
+          } > .env
+          echo "✅ .env created:"
+          cat .env
 
+      # ⚙️ Установка зависимостей и билд
       - name: Install deps
         working-directory: client
         run: npm ci
@@ -32,11 +38,21 @@ jobs:
         working-directory: client
         run: npm run build
 
-      - name: Add host key
+      # 🧹 На случай, если где-то в коде остался localhost
+      - name: Replace leftover localhost URLs just in case
+        working-directory: client
         run: |
-          mkdir -p ~/.ssh
-          ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+          find dist -type f -name "*.js" -print0 | xargs -0 sed -i 's|http://localhost:5000|https://api.finshard.com|g'
+          echo "✅ Checked for hardcoded localhost URLs"
 
+      # 🧠 Проверка SSH-доступа
+      - name: Test SSH connectivity
+        run: |
+          echo "${{ secrets.SSH_KEY }}" > id_ed25519
+          chmod 600 id_ed25519
+          ssh -o StrictHostKeyChecking=no -i id_ed25519 ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "echo '✅ SSH connected:' && hostname && ls -ld /var/www/client"
+
+      # 🚀 Деплой
       - name: Upload dist to server
         uses: burnett01/rsync-deployments@6.0.0
         with:
