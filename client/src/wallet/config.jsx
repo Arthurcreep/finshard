@@ -4,7 +4,10 @@ import { injected, walletConnect } from '@wagmi/connectors';
 import { createWeb3Modal } from '@web3modal/wagmi/react';
 
 const projectId = import.meta.env.VITE_WC_PROJECT_ID;
-
+if (!projectId) {
+  console.error('❌ VITE_WC_PROJECT_ID не задан! Проверь .env или GitHub Secrets (WC_PROJECT_ID)');
+  throw new Error('Missing VITE_WC_PROJECT_ID');
+}
 const chains = [bsc, mainnet, arbitrum, base, polygon];
 
 export const environment = {
