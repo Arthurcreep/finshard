@@ -1,5 +1,4 @@
 name: Deploy Backend
-
 on:
   push:
     branches: [main]
@@ -12,10 +11,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Add host key
-        run: |
-          mkdir -p ~/.ssh
-          ssh-keyscan -H "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts
+      # ✅ подготовка директорий под релиз
+      - name: Prepare release dir on server
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            set -e
+            mkdir -p /srv/backend/releases/${{ github.sha }} /srv/backend/shared
+            chown -R www-data:www-data /srv/backend
 
       - name: Upload source
         uses: burnett01/rsync-deployments@6.0.0
@@ -36,9 +42,8 @@ jobs:
           script: |
             set -e
             cd /srv/backend/releases/${{ github.sha }}
-            npm ci --omit=dev
+            npm ci --omit=dev || npm install --omit=dev
             ln -sfn /srv/backend/shared/.env .env
-            # миграции, если есть sequelize-cli в devDependencies:
-            npx sequelize db:migrate || true
+            npx --yes sequelize db:migrate || true
             ln -sfn /srv/backend/releases/${{ github.sha }} /srv/backend/current
             systemctl restart backend

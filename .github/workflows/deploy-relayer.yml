@@ -1,5 +1,4 @@
 name: Deploy Relayer
-
 on:
   push:
     branches: [main]
@@ -12,10 +11,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Add host key
-        run: |
-          mkdir -p ~/.ssh
-          ssh-keyscan -H "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts
+      # ✅ подготовка директорий
+      - name: Prepare release dir on server
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            set -e
+            mkdir -p /srv/relayer/releases/${{ github.sha }} /srv/relayer/shared
 
       - name: Upload relayer code
         uses: burnett01/rsync-deployments@6.0.0
@@ -36,7 +41,7 @@ jobs:
           script: |
             set -e
             cd /srv/relayer/releases/${{ github.sha }}
-            npm ci --omit=dev
+            npm ci --omit=dev || npm install --omit=dev
             ln -sfn /srv/relayer/shared/.env .env
             ln -sfn /srv/relayer/releases/${{ github.sha }} /srv/relayer/current
             systemctl restart relayer
