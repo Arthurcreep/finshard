@@ -40,8 +40,7 @@ app.use(
     allowedHeaders: ['Authorization', 'Content-Type', 'X-Requested-With'],
   }),
 );
-// быстрый ответ на preflight
-app.options('*', (_req, res) => res.sendStatus(204));
+app.options(/^\/.*$/, cors(corsOptions));
 
 // ---------- Сессия ----------
 const isProd = process.env.NODE_ENV === 'production';
