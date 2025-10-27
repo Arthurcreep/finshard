@@ -1,3 +1,4 @@
+// app.js
 require('dotenv').config();
 
 const express = require('express');
@@ -9,24 +10,53 @@ const path = require('path');
 
 const app = express();
 
+// если стоим за nginx/прокси — важно для secure-кук
+app.set('trust proxy', 1);
+
 // -------------------- базовые middleware --------------------
 app.disable('etag');
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(cookieParser());
+
+// ---------- ЖЁСТКИЙ CORS БЕЗ ВНЕШНИХ ФАЙЛОВ ----------
+const allowedOrigins = new Set([
+  'https://finshard.com',
+  'https://www.finshard.com',
+  // на всякий случай для локальной отладки:
+  'http://localhost:5173',
+  'http://127.0.0.1:5173',
+]);
+
+app.use(
+  cors({
+    origin(origin, cb) {
+      if (!origin) return cb(null, true); // curl/health без Origin
+      if (allowedOrigins.has(origin)) return cb(null, true);
+      return cb(new Error(`Not allowed by CORS: ${origin}`), false);
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Authorization', 'Content-Type', 'X-Requested-With'],
+  }),
+);
+// быстрый ответ на preflight
+app.options('*', (_req, res) => res.sendStatus(204));
+
+// ---------- Сессия ----------
+const isProd = process.env.NODE_ENV === 'production';
+const forceSecure = process.env.FORCE_SECURE_COOKIES === '1';
+
 app.use(
   session({
     secret: process.env.SESSION_SECRET || 'replace_me',
     resave: false,
     saveUninitialized: true,
-    cookie: { sameSite: 'lax' },
-  }),
-);
-
-app.use(
-  cors({
-    origin: ['http://localhost:5173', 'http://localhost:3000'],
-    credentials: true,
+    cookie: {
+      // кросс-доменные запросы finshard.com -> api.finshard.com требуют None+Secure
+      sameSite: isProd || forceSecure ? 'none' : 'lax',
+      secure: isProd || forceSecure,
+    },
   }),
 );
 
@@ -38,7 +68,9 @@ app.use('/api/wallet', require('./routes/wallet.routes'));
 app.use('/api/tx', require('./routes/tx.routes'));
 app.use('/api/articles', require('./routes/articles'));
 
+// ping/health для проверок
 app.get('/__ping', (_req, res) => res.json({ ok: true, ts: Date.now() }));
+app.get('/health', (_req, res) => res.json({ ok: true, path: '/health' }));
 
 // -------------------- раздача статики SPA (Vite build) --------------------
 const clientDist = process.env.CLIENT_DIST || path.resolve(__dirname, '..', '..', 'client', 'dist');
@@ -63,33 +95,25 @@ function isBotUA(ua = '') {
     String(ua),
   );
 }
-
 function esc(s = '') {
   return String(s).replace(
     /[&<>"]/g,
     (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]),
   );
 }
-
 function renderArticleHtml(article, origin = '') {
-  // Пытаемся подключить markdown-it. Если нет — fallback.
   let mdRender = (txt) => `<pre>${esc(txt || '')}</pre>`;
   try {
     const MarkdownIt = require('markdown-it');
     const md = new MarkdownIt({ html: false, linkify: true, breaks: true });
     mdRender = (txt) => md.render(txt || '');
-  } catch (_) {
-    /* ok, без markdown-it тоже выживем */
-  }
-
+  } catch (_) {}
   const title = article.seoTitle || article.title || 'Article';
   const desc = article.seoDesc || article.excerpt || '';
   const url = `${origin}/blog/${article.slug}`;
   const og = article.ogImageUrl || `${origin}/og-default.png`;
   const pub = article.publishedAt ? new Date(article.publishedAt).toISOString() : '';
-
   const body = mdRender(article.contentMd);
-
   return `<!doctype html>
 <html lang="${article.locale || 'ru'}">
 <head>
@@ -136,20 +160,14 @@ ${pub ? `<meta property="article:published_time" content="${esc(pub)}" />` : ''}
 </html>`;
 }
 
-// Статьи нужны для SSR-роута
 const Article = require('./models/Article');
-
-// SSR только для ботов (людям вернём SPA)
 app.get(['/blog/:slug', '/:locale/blog/:slug'], async (req, res, next) => {
   try {
     if (!isBotUA(req.headers['user-agent'])) return next();
-
     const slug = req.params.slug;
     const locale = req.params.locale || req.query.locale || 'ru';
-
     const a = await Article.findOne({ where: { slug, locale, status: 'PUBLISHED' } });
     if (!a) return next();
-
     const origin = req.protocol + '://' + req.get('host');
     const html = renderArticleHtml(a, origin);
     res.set('Cache-Control', 'public, max-age=600, stale-while-revalidate=600');
@@ -159,9 +177,7 @@ app.get(['/blog/:slug', '/:locale/blog/:slug'], async (req, res, next) => {
   }
 });
 
-// -------------------- SPA fallback (Express 5 совместимый) --------------------
-// ВАЖНО: не используем app.get('*', ...) — это ломает path-to-regexp@6.
-// Отдаём index.html для всего, что НЕ начинается с /api/
+// -------------------- SPA fallback --------------------
 const SPA_INDEX = path.join(clientDist, 'index.html');
 app.get(/^\/(?!api\/).*/, (_req, res) => res.sendFile(SPA_INDEX));
 
