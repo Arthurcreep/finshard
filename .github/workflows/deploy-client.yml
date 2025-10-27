@@ -3,7 +3,7 @@ name: Deploy Client
 on:
   push:
     branches: [main]
-    paths: ['client/**']
+    paths: ['client/**', '.github/workflows/deploy-client.yml']
 
 jobs:
   build-and-deploy:
@@ -15,21 +15,20 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: 'npm'
+          cache-dependency-path: client/package-lock.json
 
-      # 🧩 Создаём .env на лету из GitHub Secrets
       - name: Create .env for build
         working-directory: client
         run: |
           rm -f .env
           {
             echo "VITE_WC_PROJECT_ID=${{ secrets.WC_PROJECT_ID }}"
-            echo "VITE_API_URL=https://api.finshard.com"
-            echo "VITE_PUBLIC_URL=https://finshard.com"
+            echo "VITE_API_ORIGIN=https://api.finshard.com"
+            echo "VITE_SITE_ORIGIN=https://finshard.com"
           } > .env
-          echo "✅ .env created:"
-          cat .env
+          echo "✅ .env created:"; cat .env
 
-      # ⚙️ Установка зависимостей и билд
       - name: Install deps
         working-directory: client
         run: npm ci
@@ -38,27 +37,40 @@ jobs:
         working-directory: client
         run: npm run build
 
-      # 🧹 На случай, если где-то в коде остался localhost
-      - name: Replace leftover localhost URLs just in case
+      - name: Scan for hardcoded localhost
         working-directory: client
         run: |
-          find dist -type f -name "*.js" -print0 | xargs -0 sed -i 's|http://localhost:5000|https://api.finshard.com|g'
-          echo "✅ Checked for hardcoded localhost URLs"
+          if grep -RIn "localhost:5000" dist; then
+            echo "❌ Found hardcoded localhost:5000 in compiled assets"
+            exit 1
+          else
+            echo "✅ No hardcoded localhost:5000 in dist"
+          fi
 
-      # 🧠 Проверка SSH-доступа
-      - name: Test SSH connectivity
+      - name: Prepare release dir
         run: |
           echo "${{ secrets.SSH_KEY }}" > id_ed25519
           chmod 600 id_ed25519
-          ssh -o StrictHostKeyChecking=no -i id_ed25519 ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "echo '✅ SSH connected:' && hostname && ls -ld /var/www/client"
+          ssh -o StrictHostKeyChecking=no -i id_ed25519 ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} '
+            set -e
+            sudo mkdir -p /srv/frontend/releases/${{ github.sha }}
+          '
 
-      # 🚀 Деплой
-      - name: Upload dist to server
+      - name: Upload dist to server (releases)
         uses: burnett01/rsync-deployments@6.0.0
         with:
           switches: -avzr --delete
           path: client/dist/
-          remote_path: /var/www/client/
+          remote_path: /srv/frontend/releases/${{ github.sha }}/
           remote_host: ${{ secrets.SSH_HOST }}
           remote_user: ${{ secrets.SSH_USER }}
           remote_key: ${{ secrets.SSH_KEY }}
+
+      - name: Activate release
+        run: |
+          ssh -o StrictHostKeyChecking=no -i id_ed25519 ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} '
+            set -e
+            sudo ln -sfn /srv/frontend/releases/${{ github.sha }} /srv/frontend/current
+            sudo chown -R www-data:www-data /srv/frontend
+            ls -1dt /srv/frontend/releases/* | tail -n +6 | xargs -r sudo rm -rf
+          '
