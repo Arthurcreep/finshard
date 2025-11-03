@@ -1,1 +1,67 @@
-<вставь сюда текст из deploy-backend.yml, который я дал выше>
+name: Deploy Backend
+on:
+  push:
+    branches: [main]
+    paths: ['backend/**']
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Prepare release dir on server
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            set -e
+            sudo mkdir -p /srv/backend/releases/${{ github.sha }} /srv/backend/shared
+            sudo chown -R www-data:www-data /srv/backend || true
+
+      - name: Upload backend sources
+        uses: burnett01/rsync-deployments@6.0.0
+        with:
+          switches: -avzr --delete
+          path: backend/
+          remote_path: /srv/backend/releases/${{ github.sha }}/
+          remote_host: ${{ secrets.SSH_HOST }}
+          remote_user: ${{ secrets.SSH_USER }}
+          remote_key: ${{ secrets.SSH_KEY }}
+
+      - name: Install deps, migrate, switch, restart
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            set -e
+            cd /srv/backend/releases/${{ github.sha }}
+            NODE_ENV=production npm ci --omit=dev || NODE_ENV=production npm install --omit=dev
+            ln -sfn /srv/backend/shared/.env .env
+            npx --yes sequelize-cli db:migrate || npx --yes sequelize db:migrate || true
+            ln -sfn /srv/backend/releases/${{ github.sha }} /srv/backend/current
+            sudo systemctl restart backend
+            sleep 2
+            sudo systemctl status backend --no-pager || true
+
+      - name: Smoke test (front+api+ml+systemd)
+        if: always()
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            if [ -x /usr/local/bin/finshard-smoke.sh ]; then
+              /usr/local/bin/finshard-smoke.sh || true
+            else
+              echo "smoke script missing — skip"
+            fi

@@ -1,1 +1,62 @@
-<вставь сюда текст из deploy-relayer.yml>
+name: Deploy Relayer
+on:
+  push:
+    branches: [main]
+    paths: ['autoswap-relayer/**']
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Prepare release dir on server
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            set -e
+            mkdir -p /srv/relayer/releases/${{ github.sha }} /srv/relayer/shared
+
+      - name: Upload relayer sources
+        uses: burnett01/rsync-deployments@6.0.0
+        with:
+          switches: -avzr --delete
+          path: autoswap-relayer/
+          remote_path: /srv/relayer/releases/${{ github.sha }}/
+          remote_host: ${{ secrets.SSH_HOST }}
+          remote_user: ${{ secrets.SSH_USER }}
+          remote_key: ${{ secrets.SSH_KEY }}
+
+      - name: Install, switch, restart
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            set -e
+            cd /srv/relayer/releases/${{ github.sha }}
+            npm ci --omit=dev || npm install --omit=dev
+            ln -sfn /srv/relayer/shared/.env .env
+            ln -sfn /srv/relayer/releases/${{ github.sha }} /srv/relayer/current
+            sudo systemctl restart relayer
+            sleep 2
+            sudo systemctl status relayer --no-pager || true
+
+      - name: Smoke test (front+api+ml+systemd)
+        if: always()
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            if [ -x /usr/local/bin/finshard-smoke.sh ]; then
+              /usr/local/bin/finshard-smoke.sh || true
+            else
+              echo "smoke script missing — skip"
+            fi

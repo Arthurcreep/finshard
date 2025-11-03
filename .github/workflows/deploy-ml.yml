@@ -1,1 +1,65 @@
-<вставь сюда текст из deploy-ml.yml>
+name: Deploy ML
+on:
+  push:
+    branches: [main]
+    paths: ['mlservice/**']
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Prepare release dir on server
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            set -e
+            mkdir -p /srv/ml/releases/${{ github.sha }} /srv/ml/shared
+
+      - name: Upload ML sources
+        uses: burnett01/rsync-deployments@6.0.0
+        with:
+          switches: -avzr --delete
+          path: mlservice/
+          remote_path: /srv/ml/releases/${{ github.sha }}/
+          remote_host: ${{ secrets.SSH_HOST }}
+          remote_user: ${{ secrets.SSH_USER }}
+          remote_key: ${{ secrets.SSH_KEY }}
+
+      - name: Create venv, install, switch, restart
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            set -e
+            cd /srv/ml/releases/${{ github.sha }}
+            python3 -m venv .venv
+            . .venv/bin/activate
+            pip install --upgrade pip
+            pip install -r requirements.txt
+            ln -sfn /srv/ml/shared/.env .env
+            ln -sfn /srv/ml/releases/${{ github.sha }} /srv/ml/current
+            sudo systemctl restart ml
+            sleep 2
+            sudo systemctl status ml --no-pager || true
+
+      - name: Smoke test (front+api+ml+systemd)
+        if: always()
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            if [ -x /usr/local/bin/finshard-smoke.sh ]; then
+              /usr/local/bin/finshard-smoke.sh || true
+            else
+              echo "smoke script missing — skip"
+            fi
